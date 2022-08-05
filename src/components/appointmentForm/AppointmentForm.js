@@ -13,23 +13,13 @@ export const AppointmentForm = ({
   setTime,
   handleSubmit,
 }) => {
-  const getTodayString = () => {
-    const [month, day, year] = new Date()
-      .toLocaleDateString('en-US')
-      .split('/');
-    return `${year}-${month.padStart(2, '0')}-${day.padStart(
-      2,
-      '0'
-    )}`;
-  };
-
   const handleChangeTitle = (e) => {
     e.preventDefault();
     setTitle(e.target.value);
   };
   const handleChangeDate = (e) => {
     e.preventDefault();
-    setDate(getTodayString(e.target.value));
+    setDate(e.target.value);
   };
   const handleChangeTime = (e) => {
     e.preventDefault();
@@ -47,14 +37,12 @@ export const AppointmentForm = ({
       ></input>
       <input
         type="date"
-        placeholder="Date"
         value={date}
         onChange={handleChangeDate}
         required
       ></input>
       <input
         type="time"
-        placeholder="Time"
         value={time}
         onChange={handleChangeTime}
         required

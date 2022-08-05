@@ -25,6 +25,10 @@ function App() {
     });
   };
 
+  const removeContact = (name) => {
+    setContacts(contacts.filter((contact) => contact.name !== name));
+  };
+
   const addAppointment = (title, contact, date, time) => {
     setAppointments((prevAppointments) => {
       const appointment = {
@@ -35,6 +39,28 @@ function App() {
       };
       return [...prevAppointments, appointment];
     });
+  };
+
+  const removeAppointment = (title, contact, date, time) => {
+    const appointmentToRemove = {
+      title,
+      contact,
+      date,
+      time,
+    };
+    setAppointments(
+      appointments.filter((appointment) => {
+        if (
+          appointment.title === appointmentToRemove.title &&
+          appointment.contact === appointmentToRemove.contact &&
+          appointment.date === appointmentToRemove.date &&
+          appointment.time === appointmentToRemove.time
+        ) {
+          return false;
+        }
+        return true;
+      })
+    );
   };
 
   return (
@@ -56,6 +82,7 @@ function App() {
             <ContactsPage
               contacts={contacts}
               addContact={addContact}
+              removeContact={removeContact}
             />
           </Route>
           <Route path={ROUTES.APPOINTMENTS}>
@@ -63,6 +90,7 @@ function App() {
               appointments={appointments}
               contacts={contacts}
               addAppointment={addAppointment}
+              removeAppointment={removeAppointment}
             />
           </Route>
         </Switch>

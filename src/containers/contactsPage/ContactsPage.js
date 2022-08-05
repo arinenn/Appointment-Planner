@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ContactForm } from '../../components/contactForm/ContactForm';
 
 export const ContactsPage = (props) => {
-  const { contacts, addContact } = props;
+  const { contacts, addContact, removeContact } = props;
   const [name, setName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
@@ -31,6 +31,11 @@ export const ContactsPage = (props) => {
     }
   };
 
+  const handleDelete = (e) => {
+    e.preventDefault();
+    removeContact(e.target.value);
+  };
+
   return (
     <div>
       <section>
@@ -53,6 +58,7 @@ export const ContactsPage = (props) => {
             <th>Name</th>
             <th>Phone</th>
             <th>Email</th>
+            <th>Clear</th>
           </tr>
           {contacts.map((element, id) => {
             return (
@@ -60,6 +66,18 @@ export const ContactsPage = (props) => {
                 <td>{`${element.name}`}</td>
                 <td>{`${element.phoneNumber}`}</td>
                 <td>{`${element.email}`}</td>
+                <td>
+                  <button
+                    onClick={handleDelete}
+                    value={`${element.name}`}
+                    style={{
+                      backgroundColor: 'red',
+                      border: 'solid 1px',
+                    }}
+                  >
+                    Del
+                  </button>
+                </td>
               </tr>
             );
           })}

@@ -2,11 +2,32 @@ import React, { useState } from 'react';
 import { AppointmentForm } from '../../components/appointmentForm/AppointmentForm';
 
 export const AppointmentsPage = (props) => {
-  const { contacts, appointments, addAppointment } = props;
+  const {
+    contacts,
+    appointments,
+    addAppointment,
+    removeAppointment,
+  } = props;
   const [title, setTitle] = useState('');
   const [contact, setContact] = useState('');
-  const [date, setDate] = useState('');
-  const [time, setTime] = useState('');
+
+  const getTodayString = () => {
+    const [month, day, year] = new Date()
+      .toLocaleDateString('en-US')
+      .split('/');
+    return `${year}-${month.padStart(2, '0')}-${day.padStart(
+      2,
+      '0'
+    )}`;
+  };
+  const [date, setDate] = useState(getTodayString());
+  const getTimeNow = () => {
+    const today = new Date();
+    const hours = today.getHours();
+    const minutes = today.getMinutes();
+    return `${hours}:${minutes}`;
+  };
+  const [time, setTime] = useState(getTimeNow());
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -28,8 +49,15 @@ export const AppointmentsPage = (props) => {
     );
     setTitle('');
     setContact('');
-    setDate('');
-    setTime('');
+    setDate(getTodayString());
+    setTime(getTimeNow());
+  };
+
+  const handleDelete = (e) => {
+    e.preventDefault();
+    const parsedValue = e.target.value.split('#');
+    const [title, contact, date, time] = parsedValue;
+    removeAppointment(title, contact, date, time);
   };
 
   return (
@@ -58,6 +86,7 @@ export const AppointmentsPage = (props) => {
             <th>Contact</th>
             <th>Date</th>
             <th>Time</th>
+            <th>Clear</th>
           </thead>
           {appointments.map((element, id) => {
             return (
@@ -66,6 +95,18 @@ export const AppointmentsPage = (props) => {
                 <td>{`${element.contact}`}</td>
                 <td>{`${element.date}`}</td>
                 <td>{`${element.time}`}</td>
+                <td>
+                  <button
+                    onClick={handleDelete}
+                    value={`${element.title}#${element.contact}#${element.date}#${element.time}`}
+                    style={{
+                      backgroundColor: 'red',
+                      border: 'solid 1px',
+                    }}
+                  >
+                    Del
+                  </button>
+                </td>
               </tbody>
             );
           })}
