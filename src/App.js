@@ -4,9 +4,21 @@ import { Switch, Route, Redirect, NavLink } from 'react-router-dom';
 import { AppointmentsPage } from './containers/appointmentsPage/AppointmentsPage';
 import { ContactsPage } from './containers/contactsPage/ContactsPage';
 
+const myStorage = window.localStorage;
+
 function App() {
-  const [contacts, setContacts] = useState([]);
-  const [appointments, setAppointments] = useState([]);
+  const storageContacts = myStorage.getItem('contacts');
+  const storageAppointments = myStorage.getItem('appointments');
+
+  const [contacts, setContacts] = useState(
+    JSON.parse(storageContacts)
+  );
+  const [appointments, setAppointments] = useState(
+    JSON.parse(storageAppointments)
+  );
+
+  myStorage.setItem('contacts', JSON.stringify(contacts));
+  myStorage.setItem('appointments', JSON.stringify(appointments));
 
   const ROUTES = {
     CONTACTS: '/contacts',
@@ -15,14 +27,12 @@ function App() {
 
   const addContact = (name, phoneNumber, email) => {
     if (name === '') return;
-    setContacts((prevContacts) => {
-      const contact = {
-        name,
-        phoneNumber,
-        email,
-      };
-      return [...prevContacts, contact];
-    });
+    const contact = {
+      name,
+      phoneNumber,
+      email,
+    };
+    setContacts((prevContacts) => [...prevContacts, contact]);
   };
 
   const removeContact = (name) => {
