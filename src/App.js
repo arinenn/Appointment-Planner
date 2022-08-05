@@ -5,6 +5,8 @@ import { AppointmentsPage } from './containers/appointmentsPage/AppointmentsPage
 import { ContactsPage } from './containers/contactsPage/ContactsPage';
 
 const myStorage = window.localStorage;
+myStorage.setItem('contacts', '[]');
+myStorage.setItem('appointments', '[]');
 
 function App() {
   const storageContacts = myStorage.getItem('contacts');
